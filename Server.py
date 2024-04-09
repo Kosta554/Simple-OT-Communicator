@@ -1,7 +1,7 @@
 import socket
 
-HOST = 'localhost'  # Change this to your server's IP address or '0.0.0.0' for all interfaces
-PORT = 12345         # Change this to the port you want to listen on
+HOST = '192.168.1.151'  # Change this to your server's IP address or '0.0.0.0' for all interfaces
+PORT = 52784         # Change this to the port you want to listen on
 
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
