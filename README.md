@@ -2,6 +2,8 @@
 
 Simple-OT-Communicator is a basic client-server communication application built in Python using sockets. It allows for the transmission of messages between a client and a server over a network connection.
 
+![Demo](./Simple to communicator GitHub pic.drawio.png)
+
 ## Features
 
 - **Client-Server Architecture:** Utilizes a client-server model for communication.
