@@ -8,23 +8,23 @@ Simple-OT-Communicator is a basic client-server communication application built 
 
 - **Client-Server Architecture:** Utilizes a client-server model for communication.
 - **Basic Messaging:** Allows clients to send messages to the server, which are then displayed.
-- **Emergency Stop:** Includes a feature for triggering an emergency stop by pressing a button on the Raspberry Pi client.
+- **Emergency Stop:** Includes a feature for triggering an emergency stop by typing a command on the Raspberry Pi client.
 
 ## Usage
 
 1. **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/Simple-OT-Communicator.git
+    git clone https://github.com/Kosta554/Simple-OT-Communicator.git
     ```
 
 2. **Run the Server:**
     ```bash
-    python server.py
+    python Server.py
     ```
 
 3. **Run the Client:**
     ```bash
-    python client.py
+    python Client.py
     ```
 
 4. **Press Emergency Stop:**
@@ -33,13 +33,12 @@ Simple-OT-Communicator is a basic client-server communication application built 
 ## Requirements
 
 - Python 3.x
-- Raspberry Pi (for using the emergency stop feature)
-- RPi.GPIO library (for Raspberry Pi GPIO interaction)
 
 ## Configuration
 
+- **Changing IP Address:** If you want to change the IP address, you need to modify the `HOST` variable in both `Server.py` and `Client.py` files. Replace `'localhost'` with the desired IP address.
+
 - **Port Number:** By default, the server listens on port 52784. You can modify this in the `Server.py` file.
-- **Emergency Button Pin:** In the `Client.py` file, you can configure the GPIO pin used for the emergency stop button on the Raspberry Pi.
 
 ## Contributing
 
