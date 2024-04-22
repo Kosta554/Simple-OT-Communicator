@@ -21,7 +21,7 @@ def send_command_and_messages(command):
             except KeyboardInterrupt:
                 s.sendall("Emergency Stop".encode())
                 print("Emergency stop activated.")
-                sys.exit(0)
+                return
         elif command == "stop":
             s.sendall("Stop".encode())
             print("Sent stop command.")
