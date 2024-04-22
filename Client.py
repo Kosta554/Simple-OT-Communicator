@@ -21,6 +21,13 @@ def send_command_and_messages(command):
             except KeyboardInterrupt:
                 s.sendall("Emergency Stop".encode())
                 print("Emergency stop activated.")
+                sys.exit(0)
+        elif command == "stop":
+            s.sendall("Stop".encode())
+            print("Sent stop command.")
+        elif command == "restart":
+            s.sendall("Restart".encode())
+            print("Sent restart command.")
 
 def main():
     while True:
