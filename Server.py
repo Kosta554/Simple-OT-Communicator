@@ -1,34 +1,57 @@
 import socket
+import logging
 
-HOST = 'localhost'  # Change this to your server's IP address or '0.0.0.0' for all interfaces
-PORT = 52784         # Change this to the port you want to listen on
-STATUS_SERVER_HOST = 'localhost'  # Change this to the IP address of the status server
-STATUS_SERVER_PORT = 12345  # Change this to the port the status server is listening on
+# Setup logging
+logging.basicConfig(filename='server.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
-def send_status_update(message):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((STATUS_SERVER_HOST, STATUS_SERVER_PORT))
-        s.sendall(message.encode())
-        print(f"Sent status update '{message}' to status server.")
+HOST = 'localhost'  # Server's IP address or '0.0.0.0' for all interfaces
+PORT = 52784        # Port to listen on
+MONITORING_HOST = 'monitoring_server_ip'  # IP of the monitoring server
+MONITORING_PORT = 12345                   # Port the monitoring server listens on
+
+def send_error_code(error_code, description):
+    """ Sends error codes to a monitoring server for NIDS to pick up. """
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:  # Using UDP
+        message = f"{error_code}: {description}"
+        sock.sendto(message.encode(), (MONITORING_HOST, MONITORING_PORT))
+        logging.info(f"Error code sent: {message}")
 
 def main():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, PORT))
-        s.listen()
-        print(f"Server listening on {HOST}:{PORT}")
-        while True:
-            conn, addr = s.accept()
-            with conn:
-                print(f"Connected by {addr}")
+    server_running = True
+    while server_running:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                try:
+                    s.bind((HOST, PORT))
+                    s.listen()
+                    logging.info("Server listening on {}:{}".format(HOST, PORT))
+                except socket.error as e:
+                    send_error_code(2, "Cannot bind to {}:{}. Details: {}".format(HOST, PORT, e))
+                    break  # Exit the server loop if binding fails
+
                 while True:
-                    data = conn.recv(1024)
-                    if not data:
-                        break
-                    message = data.decode()
-                    print(f"Received: {message}")
-                    if message == "Emergency Stop":
-                        print("Emergency stop received.")
-                        send_status_update("Device Not Operational")
+                    conn, addr = s.accept()
+                    with conn:
+                        logging.info("Connected by {}".format(addr))
+                        while True:
+                            data = conn.recv(1024)
+                            if not data:
+                                send_error_code(4, "Lost connection with host.")
+                                break
+                            message = data.decode()
+                            process_message(message)
+        except KeyboardInterrupt:
+            send_error_code(3, "Server shutdown requested via KeyboardInterrupt.")
+            server_running = False
+        except Exception as e:
+            send_error_code(3, "Unexpected server error. Details: {}".format(e))
+            server_running = False  # Optionally restart or shut down depending on policy
+
+def process_message(message):
+    if message == "Emergency Stop":
+        send_error_code(1, "Emergency stop activated.")
+    else:
+        logging.info("Received: {}".format(message))
 
 if __name__ == "__main__":
     main()
