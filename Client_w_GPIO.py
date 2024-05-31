@@ -2,7 +2,7 @@ import socket
 import time
 import RPi.GPIO as GPIO
 
-HOST = '192.168.1.150'  # Change this to the IP address of your server if not running locally
+HOST = 'IP'  # Change this to the IP address of your server if not running locally
 PORT = 52784        # Change this to the port your server is listening on
 EMERGENCY_PIN = 17   # Change this to the GPIO pin you're using for the emergency button
 
