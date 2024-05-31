@@ -42,7 +42,8 @@ jobs:
           args: # optional
     # Set the sonar.projectBaseDir analysis property
           projectBaseDir: # optional, default is .
-          
+        
+        SNYK_TOKEN: ${{secrets.SONAR_API_KEY}}
   snyk:
     permissions:
       contents: read # for actions/checkout to fetch code
@@ -64,7 +65,7 @@ jobs:
 
         env:
           # This is where you will need to introduce the Snyk API token created with your Snyk account
-          SNYK_TOKEN: ${{secrets.SONAR_API_KEY}}
+          SNYK_TOKEN: ${{secrets.}}
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline
