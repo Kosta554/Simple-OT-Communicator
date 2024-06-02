@@ -1,5 +1,5 @@
 # Simple OT Communicator
-
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Kosta554_Simple-OT-Communicator&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Kosta554_Simple-OT-Communicator)
 ## Introduction
 Simple OT Communicator is a client-server application designed for operational technology (OT) environments, leveraging Python sockets for communication. It supports secure and reliable messaging capabilities across networked devices.
 
